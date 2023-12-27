@@ -1,0 +1,200 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "ABC Ginto Nord";
+  font-weight: 800;
+  src: local("ABC Ginto Nord"),
+    url(./fonts/abcgintonord/ABCGintoNordVariable-Trial.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "whitney";
+  font-weight: 300;
+  src: local("whitney"), url(./fonts/whitney/Whitney-300.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Whitney";
+  font-weight: 400;
+  src: local("Whitney"), url(./fonts/whitney/Whitney-400.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Whitney";
+  font-weight: 500;
+  src: local("Whitney"), url(./fonts/whitney/Whitney-500.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Whitney";
+  font-weight: 600;
+  src: local("Whitney"), url(./fonts/whitney/Whitney-600.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Whitney";
+  font-weight: 700;
+  src: local("Whitney"), url(./fonts/whitney/Whitney-700.woff) format("woff");
+}
+
+.font-ginto {
+  font-family: "ABC Ginto Nord", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+}
+
+@layer base {
+  html,
+  body {
+    overflow-x: hidden;
+    margin: 0;
+    height: 100%;
+    font-family: "Whitney", system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+      "Helvetica Neue", sans-serif;
+  }
+}
+
+@layer components {
+  .mask {
+    -webkit-mask-image: radial-gradient(
+      circle 8px at calc(100% - 4px) calc(100% - 4px),
+      transparent 8px,
+      #000 0
+    );
+  }
+
+  .container {
+    @apply w-full max-w-[1260px] px-5 py-20 md:px-[40px] md:py-[120px];
+  }
+
+  .navbar-link {
+    @apply m-2.5 p-2.5 hover:underline;
+  }
+
+  .shadow-button {
+    box-shadow: 0 8px 15px rgb(0 0 0 / 20%);
+  }
+
+  .black-hover {
+    background-color: hsl(220, calc(var(--saturation-factor, 1) * 7.7%), 22.9%);
+  }
+
+  .weird {
+    grid-column: 9 / span 4;
+  }
+
+  .weird-2 {
+    grid-column: 1 / span 4;
+  }
+
+  .weird-3 {
+    grid-column: 6 / span 7;
+  }
+
+  .weird-4 {
+    grid-column: 2 / span 10;
+  }
+
+  .font-calc {
+    font-size: clamp(16px, 2vw, 20px);
+  }
+
+  .tab {
+    @apply flex cursor-pointer items-center space-x-2 rounded border-none py-0.5 px-2 font-medium text-d-gray outline-none ui-selected:bg-d-icon-bg ui-selected:text-d-white hover:bg-d-icon-bg;
+  }
+
+  .pill {
+    @apply flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-red-500  text-xs font-bold text-white;
+  }
+
+  .fr:hover span {
+    @apply inline-block;
+  }
+
+  .fr:hover .fr-icon {
+    @apply bg-d-dark-black;
+  }
+
+  .action-icon {
+    @apply flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-secondary-alt text-xl text-d-white transition ease-out hover:bg-d-dark-black;
+  }
+}
+
+.triangle::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  transform: translateY(-50%);
+  background-color: transparent;
+  width: 0;
+  border-top: 5px solid transparent;
+  border-left: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 5px solid hsl(216, calc(1 * 7.2%), 13.5%);
+}
+
+.custom-hover:hover {
+  box-shadow: 0 0 0 1px rgba(4, 4, 5, 0.15), 0 4px 4px rgba(0, 0, 0, 0.16);
+}
+
+.display {
+  display: none;
+}
+
+.custom-group:hover .display {
+  display: flex;
+}
+
+.drop {
+  animation: drop 0.3s ease-in-out 1;
+}
+
+@keyframes drop {
+  0% {
+    opacity: 0.5;
+    transform: perspective(500px) translateZ(100px) translateY(-100px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: perspective(500px) translateZ(0px) translateY(0px);
+  }
+}
+
+.rotate {
+  animation: rotate 0.2s ease-out;
+}
+
+.custom-shadow {
+  box-shadow: 0 0 0 1px rgba(32, 34, 37, 0.6), 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.fade-in {
+  animation: fade-in 600ms ease-out;
+}
+
+.call__modal:hover > div:first-child {
+  box-shadow: inset 0 5px 30px 20px rgba(0, 0, 0, 0.9);
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}

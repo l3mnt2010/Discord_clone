@@ -1,0 +1,132 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id String @id @default(uuid())
+
+    email         String    @unique
+    password      String
+    username      String
+    image         String?
+    emailVerified DateTime?
+    u_name        String    @unique
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    sendFriendRequests     FriendRequest[] @relation("sender")
+    receivedFriendRequests FriendRequest[] @relation("receiver")
+    sendFriends            Friend[]        @relation("sender")
+    receivedFriends        Friend[]        @relation("receiver")
+
+    ConversationParticipant ConversationParticipant[]
+    messages                Message[]
+
+    peer                Peer?
+    MessageNotification MessageNotification[]
+
+    @@map("users")
+}
+
+model Peer {
+    id     String @id @default(uuid())
+    userId String @unique
+    user   User   @relation(fields: [userId], references: [id])
+}
+
+model FriendRequest {
+    id String @id @default(uuid())
+
+    senderId String
+    sender   User?  @relation(name: "sender", fields: [senderId], references: [id], onDelete: Cascade)
+
+    receiverId String
+    receiver   User?  @relation(name: "receiver", fields: [receiverId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+
+    status String
+
+    @@map("friend_requsts")
+}
+
+model Friend {
+    id String @id @default(uuid())
+
+    senderId String
+    sender   User?  @relation(name: "sender", fields: [senderId], references: [id], onDelete: Cascade)
+
+    receiverId String
+    receiver   User?  @relation(name: "receiver", fields: [receiverId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+
+    @@map("friends")
+}
+
+model Conversation {
+    id String @id @default(uuid())
+
+    latestMessageId String?  @unique
+    latestMessage   Message? @relation(name: "latestMessage", fields: [latestMessageId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+    participants ConversationParticipant[]
+    messages     Message[]
+
+    createdAt           DateTime              @default(now())
+    updateAt            DateTime              @updatedAt
+    MessageNotification MessageNotification[]
+}
+
+model ConversationParticipant {
+    id String @id @default(uuid())
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
+
+    conversationId String
+    conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+    hasSeenLatestMessage Boolean
+    isTyping             Boolean @default(false)
+}
+
+model Message {
+    id String @id @default(uuid())
+
+    conversationId String
+    conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+    authorId String
+    author   User   @relation(fields: [authorId], references: [id])
+
+    content String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    isLatestIn          Conversation?         @relation(name: "latestMessage")
+    MessageNotification MessageNotification[]
+}
+
+model MessageNotification {
+    id String @id @default(uuid())
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
+
+    conversationId String
+    conversation   Conversation @relation(fields: [conversationId], references: [id])
+
+    messageId String
+    message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
